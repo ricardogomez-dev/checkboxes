@@ -18,8 +18,10 @@
           	<p class="text-gray-800 text-lg">¿Qué puede hacer el usuario asignado a este rol?</p>
           </div>
           <div class="flex flex-wrap bg-white p-10">
-	        <div class="w-52" v-for="(permission, index) in permissions">
-      			<input v-model="form.permissions" :value="permission.id" type="checkbox">
+	        <div class="w-52" v-for="(permission, index) in permissions" :key="permission.id">
+
+      			<input :checked="isChecked(permission.id)" name="permissions[]" :value="permission.id" type="checkbox">
+
 		  		<label class="text-gray-800 text-md ml-3">{{ permission.name }}</label>
           	</div>
 		  </div>
@@ -47,6 +49,16 @@
 		},
 		methods: {
 			submit(){
+        let data = document.getElementsByName("permissions[]");
+        if(data.length > 0){
+          data.forEach((e)=>{
+            if(e.checked){
+              this.form.permissions.push(e.value);
+            }
+          });
+        }
+        console.log(this.form);
+
 				if(this.method === 'store')
 				{
 					this.$inertia.post('/roles', this.form);
@@ -55,8 +67,22 @@
 
 				}
 			},
-			isChecked(index){
-				//  To do.
+			isChecked(id){
+       let encontrado = false;
+       let contador = 0;
+       if(this.selected){
+          this.selected.forEach((e)=>{
+            if(e.id == id){
+              contador++;
+            }
+         });
+       }
+
+       if(contador > 0){
+          encontrado = true;
+       }
+
+       return encontrado;
 			}
 		}
 	}

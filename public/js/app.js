@@ -16436,13 +16436,43 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     submit: function submit() {
+      var _this = this;
+
+      var data = document.getElementsByName("permissions[]");
+
+      if (data.length > 0) {
+        data.forEach(function (e) {
+          if (e.checked) {
+            _this.form.permissions.push(e.value);
+          }
+        });
+      }
+
+      console.log(this.form);
+
       if (this.method === 'store') {
         this.$inertia.post('/roles', this.form);
       } else {
         this.$inertia.patch("/roles/".concat(this.role.id), this.form);
       }
     },
-    isChecked: function isChecked(index) {//  To do.
+    isChecked: function isChecked(id) {
+      var encontrado = false;
+      var contador = 0;
+
+      if (this.selected) {
+        this.selected.forEach(function (e) {
+          if (e.id == id) {
+            contador++;
+          }
+        });
+      }
+
+      if (contador > 0) {
+        encontrado = true;
+      }
+
+      return encontrado;
     }
   }
 });
@@ -18390,13 +18420,10 @@ var _hoisted_9 = {
   "class": "flex flex-wrap bg-white p-10"
 };
 var _hoisted_10 = {
-  "class": "w-52"
-};
-var _hoisted_11 = {
   "class": "text-gray-800 text-md ml-3"
 };
 
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "px-4 py-3 bg-gray-50 text-right sm:px-6"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
   type: "submit",
@@ -18407,7 +18434,7 @@ var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", {
-    onSubmit: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+    onSubmit: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.submit && $options.submit.apply($options, arguments);
     }, ["prevent"]))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
@@ -18420,20 +18447,22 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, null, 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.name]])])])])]), _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.permissions, function (permission, index) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-      "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
-        return $data.form.permissions = $event;
-      }),
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
+      "class": "w-52",
+      key: permission.id
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+      checked: $options.isChecked(permission.id),
+      name: "permissions[]",
       value: permission.id,
       type: "checkbox"
     }, null, 8
     /* PROPS */
-    , ["value"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.form.permissions]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(permission.name), 1
+    , ["checked", "value"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(permission.name), 1
     /* TEXT */
     )]);
-  }), 256
-  /* UNKEYED_FRAGMENT */
-  ))]), _hoisted_12])], 32
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))]), _hoisted_11])], 32
   /* HYDRATE_EVENTS */
   )]);
 }
